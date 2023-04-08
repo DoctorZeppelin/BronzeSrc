@@ -1,0 +1,17 @@
+ultra wacky
+UHHHHHHHHHHHHHHHHHHHHHHH.....
+engine
+
+(UWUE 0.1)
+Can't load E:\Games\Projects\BronzeSrc\data\config.ini
+java.io.FileNotFoundException: data\config.ini (The system cannot find the file specified)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:216)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157)
+	at code.utils.assetManager.AssetManager.load(AssetManager.java:77)
+	at code.utils.assetManager.AssetManager.loadString(AssetManager.java:92)
+	at code.utils.assetManager.AssetManager.loadLines(AssetManager.java:107)
+	at code.utils.assetManager.AssetManager.loadIni(AssetManager.java:122)
+	at code.game.Configuration.load(Configuration.java:87)
+	at code.game.Configuration.<init>(Configuration.java:48)
+	at code.game.Main.main(Main.java:70)
