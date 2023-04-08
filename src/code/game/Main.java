@@ -82,8 +82,8 @@ public class Main extends Screen {
         
         Player.initKeys(GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_D, 
                 GLFW.GLFW_KEY_SPACE, GLFW.GLFW_KEY_LEFT_SHIFT,
-                GLFW.GLFW_KEY_E, GLFW.GLFW_KEY_TAB);
-        
+                GLFW.GLFW_KEY_E, GLFW.GLFW_KEY_TAB, GLFW.GLFW_KEY_F3);
+
         Main.TILDE = Keys.addKeyToBinding(Main.TILDE, GLFW.GLFW_KEY_GRAVE_ACCENT);
         Main.ERASE = Keys.addKeyToBinding(Main.ERASE, GLFW.GLFW_KEY_BACKSPACE);
         
