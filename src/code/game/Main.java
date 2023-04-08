@@ -165,22 +165,25 @@ public class Main extends Screen {
                         ConsoleExecute.Lua(main, text);
                         break;
                     case "map":
-                        try{
-                            ConsoleExecute.Map(getGame(), arr[1]);
-                        }
-                        catch(Exception e){
-
+                        //Check if game exists
+                        if(getGame() == null){
+                            //If game doesn't exist, create it. (Copied from the main menu start)
                             main.window.showCursor(false);
                             BlankScreen blank = new BlankScreen(main, 0, 0) {
 
                                 public void action() {
                                     Game game = new Game(main);
                                     main.setScreen(game, true);
-                                    game.loadMap(arr[1]);
+                                    ConsoleExecute.Map(game, arr[1], main);
+
                                 }
                             };
                             main.setScreen(blank, true);
-                    }
+                        }
+                        else{
+                            ConsoleExecute.Map(getGame(), arr[1], main);
+                        }
+
                             break;
                     case "reload":
                         ConsoleExecute.Reload(getGame());

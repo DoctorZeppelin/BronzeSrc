@@ -172,6 +172,7 @@ public class Game extends Screen {
         long loadtime = System.currentTimeMillis();
 
         WorldLoader.loadWorld(this, nextMap, newPlayerPos, nextRotX, nextRotY);
+        System.out.println(nextMap);
         currentMap = nextMap;
 
         nextMap = null;

@@ -22,30 +22,23 @@ public class ConsoleExecute {
 
     }
 
-    public static void Map(Game game, String Map){
+    public static void Map(Game game, String Map, Main main){
 
-        try {
-            String[] lines = AssetManager.loadLines("/maps/" + Map + "/map.ini");
-            IniFile lvl = new IniFile(new Hashtable());
-            lvl.set(lines, true);
 
-            if (lvl.groupExists("player")) {
-                String tmp = lvl.get("player", "pos");
-                if (tmp != null) {
-                    float[] pPos = StringTools.cutOnFloats(tmp, ',');
-                    game.player.pos.set(pPos[0], pPos[1], pPos[2]);
-                }
-
-                game.player.rotX = lvl.getFloat("player", "rot_x", 0);
-                game.player.rotY = lvl.getFloat("player", "rot_y", 0);
+        //Load Map
+        if(AssetManager.load("/maps/"+Map+"/map.ini") == null){
+            System.out.println("Map not found!");
+            if(game.currentMap == null){
+                System.out.println(game.currentMap);
+                game.loadMap(main.gamecfg.get("game", "start_map"));
             }
-            if (game.currentMap != Map) {
-                game.loadMap(Map);
-            }
+            return;
         }
-        catch(Exception e){
-            System.out.println("Map Does Not Exist");
-        }
+
+        game.loadMap(Map);
+        System.out.println("Loading "+Map+"...");
+
+
     }
 
     public static void Reload(Game game){
