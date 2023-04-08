@@ -174,6 +174,7 @@ public class Main extends Screen {
                                 public void action() {
                                     Game game = new Game(main);
                                     main.setScreen(game, true);
+                                    //idk why but calling getGame() outside this function crashes the game in some
                                     ConsoleExecute.Map(game, arr[1], main);
 
                                 }
@@ -181,6 +182,7 @@ public class Main extends Screen {
                             main.setScreen(blank, true);
                         }
                         else{
+                            //if game does exist already
                             ConsoleExecute.Map(getGame(), arr[1], main);
                         }
 

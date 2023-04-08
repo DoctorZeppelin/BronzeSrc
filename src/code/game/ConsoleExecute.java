@@ -25,16 +25,18 @@ public class ConsoleExecute {
     public static void Map(Game game, String Map, Main main){
 
 
-        //Load Map
+        //Check if map exists
         if(AssetManager.load("/maps/"+Map+"/map.ini") == null){
             System.out.println("Map not found!");
+
+            //Just in case a map doesn't exist to stop it from crashing
             if(game.currentMap == null){
-                System.out.println(game.currentMap);
                 game.loadMap(main.gamecfg.get("game", "start_map"));
             }
             return;
         }
 
+        //Load Map
         game.loadMap(Map);
         System.out.println("Loading "+Map+"...");
 
