@@ -20,6 +20,7 @@ import code.ui.itemList.TextItem;
 import code.utils.assetManager.AssetManager;
 import code.utils.FPS;
 import code.utils.Keys;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 
@@ -46,6 +47,8 @@ public class Game extends Screen {
     public Player player;
 
     private boolean inPauseScreen;
+
+    public boolean debugmode;
     private ItemList pauseScreen;
 
     private Fade fade, wakeUpFade;
@@ -78,6 +81,9 @@ public class Game extends Screen {
         dialog = new DialogScreen();
         pauseScreen = ItemList.createItemList(w, h, main.font, main.selectedS);
         setPauseScreenItems();
+
+        debugmode = main.conf.debug;
+
 
         //set crosshairs
         CrossHairSelectIcon = e3d.getTexture("/images/crosshairselect.png", null);
@@ -388,7 +394,7 @@ public class Game extends Screen {
                     0xffffff, 1);
         }
 
-        if(main.conf.debug) {
+        if(debugmode) {
             main.font.drawString(main.hudRender, "FPS: " + FPS.fps, 10, 10, 1, main.fontColor);
             main.font.drawString(main.hudRender,
                     Math.round(player.pos.x) + ", " + Math.round(player.pos.y) + ", " + Math.round(player.pos.z),
@@ -431,7 +437,12 @@ public class Game extends Screen {
     }
 
     public void keyPressed(int key) {
-        if(isWakingUp()) return;
+        if(isWakingUp())
+
+        //Toggle Debug mode
+        if(key == GLFW.GLFW_KEY_F3) {
+            debugmode = !debugmode;
+        }
 
         if(Keys.isThatBinding(key, Keys.ESC)) {
             main.clickedS.play();

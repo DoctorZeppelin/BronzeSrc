@@ -352,6 +352,7 @@ public class Main extends Screen {
         } else if(key == GLFW.GLFW_KEY_F2) {
             e3d.takeScreenshot();
             return;
+
         }
         
         if(textBox != null && Keys.isThatBinding(key, Keys.OK)) {
