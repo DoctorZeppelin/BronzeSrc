@@ -84,41 +84,42 @@ public class Configuration {
     }
     
     void load(int fwd, int fhd) {
+
         IniFile conf = AssetManager.loadIni("config.ini", true);
-        
+
         //Audio
         musicVolume = conf.getInt("audio", "music_volume", musicVolume);
         soundsVolume = conf.getInt("audio", "sounds_volume", soundsVolume);
         footstepsVolume = conf.getInt("audio", "footsteps_volume", footstepsVolume);
-		
+
         hrtf = conf.getInt("audio", "hrtf", hrtf?1:0) == 1;
-        
+
         //Controls
         mouseLookSpeed = conf.getInt("controls", "mouse_look_speed", mouseLookSpeed);
         keyboardLookSpeed = conf.getInt("controls", "keyboard_look_speed", keyboardLookSpeed);
         gamepadLookSpeed = conf.getInt("controls", "gamepad_look_speed", gamepadLookSpeed);
-        
+
         gamepadLayout = conf.getInt("controls", "gamepad_layout", gamepadLayout);
-        
+
         //Screen
         startInFullscr = conf.getInt("screen", "start_in_fullscreen", startInFullscr?1:0) == 1;
         vsync = conf.getInt("screen", "vsync", vsync?1:0) == 1;
-        
+
         fw = conf.getInt("screen", "fullscr_width", fwd);
         fh = conf.getInt("screen", "fullscr_height", fhd);
-        
+
         ww = conf.getInt("screen", "window_width", ww);
         wh = conf.getInt("screen", "window_height", wh);
-        
+
         aa = conf.getInt("screen", "antialiasing", aa);
-        
+
         //PSX Render
         psxRender = conf.getInt("screen", "psx_render", psxRender?1:0) == 1;
         dithering = conf.getInt("screen", "dithering", dithering?1:0) == 1;
-        
+
         vrw = conf.getInt("screen", "vres_width", vrw);
         vrh = conf.getInt("screen", "vres_height", vrh);
-        
+
         debug = conf.getInt("game", "debug", debug?1:0) == 1;
     }
     

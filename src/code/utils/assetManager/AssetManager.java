@@ -81,8 +81,13 @@ public class AssetManager {
             
             return data;
         } catch(Exception e) {
-            System.out.println("Can't load "+f.getAbsolutePath());
-            e.printStackTrace();
+            if(f.getName().equals("config.ini")){
+                System.out.println("No Config!");
+            }
+            else {
+                System.out.println("Can't load " + f.getAbsolutePath());
+                e.printStackTrace();
+            }
         }
         
         return null;
@@ -119,8 +124,10 @@ public class AssetManager {
     }
 
     public static IniFile loadIni(String path, boolean sections) {
-        String[] lines = loadLines(path);
-        
+
+        String[] lines;
+        lines = loadLines(path);
+
         IniFile ini = new IniFile(new Hashtable());
         if(lines != null) ini.set(lines, sections);
         
