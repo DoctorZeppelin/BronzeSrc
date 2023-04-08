@@ -1,8 +1,17 @@
 package code.game.world.entities;
 
+import code.engine3d.HudRender;
+import code.engine.Screen;
+import code.game.Main;
 import code.game.world.World;
 
+import code.utils.FPS;
 import code.utils.Keys;
+import code.game.Game;
+
+import java.awt.geom.Rectangle2D;
+
+//import code.game.Main;
 
 /**
  *
@@ -10,7 +19,7 @@ import code.utils.Keys;
  */
 public class Player extends PhysEntity {
 
-    public static int WALK_FORWARD, WALK_BACKWARD, STRAFE_LEFT, STRAFE_RIGHT, JUMP, RUN, INVENTORY,
+    public static int WALK_FORWARD, WALK_BACKWARD, STRAFE_LEFT, STRAFE_RIGHT, JUMP, RUN, INVENTORY, DEBUG,
             INTERACT;
     public static String[] inventorySlots = new String[6];
 
@@ -47,7 +56,7 @@ public class Player extends PhysEntity {
 
     }
     
-    public static void initKeys(int w, int s, int a, int d, int space, int shift, int e, int tab) {
+    public static void initKeys(int w, int s, int a, int d, int space, int shift, int e, int tab, int F3) {
         WALK_FORWARD = Keys.addKeyToBinding(WALK_FORWARD, w);
         WALK_BACKWARD = Keys.addKeyToBinding(WALK_BACKWARD, s);
         STRAFE_LEFT = Keys.addKeyToBinding(STRAFE_LEFT, a);
@@ -56,6 +65,7 @@ public class Player extends PhysEntity {
         RUN = Keys.addKeyToBinding(RUN, shift);
         INVENTORY = Keys.addKeyToBinding(INVENTORY, tab);
 
+        DEBUG = Keys.addKeyToBinding(DEBUG, F3);
         INTERACT = Keys.addKeyToBinding(INTERACT, e);
     }
 
