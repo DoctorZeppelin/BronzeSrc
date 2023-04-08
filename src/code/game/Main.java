@@ -30,12 +30,16 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 
 import org.lwjgl.glfw.GLFW;
 
+import java.util.Hashtable;
+
+import static java.lang.Thread.sleep;
+
 /**
  *
  * @author Roman Lahin
  */
 public class Main extends Screen {
-    
+
     //bilding
     static int TILDE, ERASE;
     
@@ -52,7 +56,7 @@ public class Main extends Screen {
     
     BMFont font;
     int fontColor, fontSelColor;
-    SoundSource selectedS, clickedS, gameStartS;
+    SoundSource selectedS, clickedS, gameStartS, consoleerror;
 
     private boolean run = true;
     private Screen screen, nextScreen;
@@ -87,13 +91,13 @@ public class Main extends Screen {
         int h = main.conf.startInFullscr? main.conf.fh:main.conf.wh;
         
         main.window = Window.createGLWindow(
-			main.conf.startInFullscr,
-			w, h,
-			main.conf.vsync, 
-			main.conf.aa, 
-			main.conf.debug
-		);
-		
+                main.conf.startInFullscr,
+                w, h,
+                main.conf.vsync,
+                main.conf.aa,
+                main.conf.debug
+        );
+
         main.window.setTitle(main.gamecfg.get("game", "name"));
         main.window.setListener(main);
         main.window.bind();
@@ -120,6 +124,10 @@ public class Main extends Screen {
         gameStartS = new SoundSource("/sounds/game start.ogg");
         gameStartS.set3D(false);
         gameStartS.buffer.neverUnload = true;
+
+        consoleerror = new SoundSource("/sounds/error.ogg");
+        consoleerror.set3D(false);
+        consoleerror.buffer.neverUnload = true;
         
         e3d = new E3D(window);
         hudRender = new HudRender(e3d);
@@ -129,7 +137,9 @@ public class Main extends Screen {
         
         fontColor = StringTools.getRGB(gamecfg.getDef("hud", "font_color", "255,255,255"), ',');
         fontSelColor = StringTools.getRGB(gamecfg.getDef("hud", "font_selected_color", "221,136,149"), ',');
-        
+
+
+
         clearLua();
         
         final Main main = this;
@@ -143,12 +153,36 @@ public class Main extends Screen {
             public void onEnter() {
                 super.onEnter();
 
-                LuaValue val = Scripting.runScript(main, text);
-                if(!val.isnil()) {
-                    System.out.println("bool " + val.toboolean());
-                    System.out.println("int " + val.toint());
-                    System.out.println("num " + val.todouble());
-                    System.out.println("str " + val.tojstring());
+                String arr[] = text.split(" ", 2);
+
+                switch(arr[0]){
+                    case "quit":
+                        destroy();
+                        break;
+                    case "lua":
+                        ConsoleExecute.Lua(main, text);
+                        break;
+                    case "map":
+                        try{
+                            ConsoleExecute.Map(getGame(), arr[1]);
+                        }
+                        catch(Exception e){
+                            BlankScreen blank = new BlankScreen(main, 0, 0) {
+
+                                public void action() {
+                                    Game game = new Game(main);
+                                    main.setScreen(game, true);
+                                    ConsoleExecute.Map(getGame(), arr[1]);
+                                }
+                            };
+                            main.setScreen(blank, true);
+                    }
+                            break;
+                    case "reload":
+                        ConsoleExecute.Reload(getGame());
+                        break;
+                    default:
+                        main.consoleerror.play();
                 }
 
                 text = "";
@@ -166,13 +200,14 @@ public class Main extends Screen {
         
         hudRender.destroy();
         e3d.destroy();
-		LightGroup.clear(false);
+        LightGroup.clear(false);
         font.destroy();
         
         musPlayer.destroy();
         selectedS.destroy();
         clickedS.destroy();
         gameStartS.destroy();
+        consoleerror.destroy();
         
         AssetManager.destroyThings(AssetManager.ALL);
         
@@ -187,15 +222,15 @@ public class Main extends Screen {
     }
 
     private void stop() {
-		nextScreen = null;
+        nextScreen = null;
         run = false;
     }
 
     private void run() {
         try {
             while(run) {
-				window.pollEvents();
-				
+                window.pollEvents();
+
                 //Change screen to next screen
                 if(nextScreen != null) {
                     if(screen != null && needToDestroyScreen) {
@@ -222,7 +257,7 @@ public class Main extends Screen {
                 window.flush();
 
                 if(!conf.vsync) try {
-                    Thread.sleep(Math.max(1, 8 - (System.currentTimeMillis() - FPS.previousFrame)));
+                    sleep(Math.max(1, 8 - (System.currentTimeMillis() - FPS.previousFrame)));
                     //max 125 fps (todo: add support of 144hz monitors??)
                 } catch (Exception e) {
                 }
@@ -250,10 +285,10 @@ public class Main extends Screen {
     public Screen getScreen() {
         return screen;
     }
-	
-	public void closeGame() {
-		stop();
-	}
+
+    public void closeGame() {
+        stop();
+    }
     
     public int getWidth() {
         return window.getWidth();
@@ -378,10 +413,10 @@ public class Main extends Screen {
     }
     
     private void setFontScale(int w, int h) {
-		//Todo add boolean to control minimal scale and rounding
-		font.baseScale = Math.max(
-				1f/* / font.getOriginalHeight()*/, 
-				Math.round(Math.min(w, h) * 30 / 768f / font.getOriginalBaseHeight()));
+        //Todo add boolean to control minimal scale and rounding
+        font.baseScale = Math.max(
+                1f/* / font.getOriginalHeight()*/,
+                Math.round(Math.min(w, h) * 30 / 768f / font.getOriginalBaseHeight()));
     }
 
 }
