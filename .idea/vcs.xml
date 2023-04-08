@@ -2,8 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/UtilsFps" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/UtilsNewKeyboard" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/UtilsText" vcs="Git" />
   </component>
 </project>

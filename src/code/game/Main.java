@@ -167,12 +167,14 @@ public class Main extends Screen {
                             ConsoleExecute.Map(getGame(), arr[1]);
                         }
                         catch(Exception e){
+
+                            main.window.showCursor(false);
                             BlankScreen blank = new BlankScreen(main, 0, 0) {
 
                                 public void action() {
                                     Game game = new Game(main);
                                     main.setScreen(game, true);
-                                    ConsoleExecute.Map(getGame(), arr[1]);
+                                    game.loadMap(arr[1]);
                                 }
                             };
                             main.setScreen(blank, true);

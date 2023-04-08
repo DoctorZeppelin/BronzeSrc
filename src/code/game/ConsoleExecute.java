@@ -24,21 +24,28 @@ public class ConsoleExecute {
 
     public static void Map(Game game, String Map){
 
-        String[] lines = AssetManager.loadLines("/maps/"+Map+"/map.ini");
-        IniFile lvl = new IniFile(new Hashtable());
-        lvl.set(lines, true);
+        try {
+            String[] lines = AssetManager.loadLines("/maps/" + Map + "/map.ini");
+            IniFile lvl = new IniFile(new Hashtable());
+            lvl.set(lines, true);
 
-        if(lvl.groupExists("player")) {
-            String tmp = lvl.get("player", "pos");
-            if(tmp != null) {
-                float[] pPos = StringTools.cutOnFloats(tmp, ',');
-                game.player.pos.set(pPos[0], pPos[1], pPos[2]);
+            if (lvl.groupExists("player")) {
+                String tmp = lvl.get("player", "pos");
+                if (tmp != null) {
+                    float[] pPos = StringTools.cutOnFloats(tmp, ',');
+                    game.player.pos.set(pPos[0], pPos[1], pPos[2]);
+                }
+
+                game.player.rotX = lvl.getFloat("player", "rot_x", 0);
+                game.player.rotY = lvl.getFloat("player", "rot_y", 0);
             }
-
-            game.player.rotX = lvl.getFloat("player", "rot_x", 0);
-            game.player.rotY = lvl.getFloat("player", "rot_y", 0);
+            if (game.currentMap != Map) {
+                game.loadMap(Map);
+            }
         }
-        game.loadMap(Map);
+        catch(Exception e){
+            System.out.println("Map Does Not Exist");
+        }
     }
 
     public static void Reload(Game game){
