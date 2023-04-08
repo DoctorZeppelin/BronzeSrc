@@ -26,7 +26,7 @@ public class Player extends PhysEntity {
     public float eyeHeight;
     public float rotX;
 
-
+    public boolean isThisWorking = false;
 
     public Player() {
         name = "player";
@@ -52,6 +52,8 @@ public class Player extends PhysEntity {
         if(Keys.isPressed((INVENTORY)))
         {
             System.out.println(Player.inventorySlots[1]);
+            isThisWorking = true;
+
         }
 
     }

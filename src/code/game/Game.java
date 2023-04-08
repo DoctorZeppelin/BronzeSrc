@@ -395,6 +395,9 @@ public class Game extends Screen {
                     10, 10 + main.font.getHeight(), 1, main.fontColor);
         }
 
+        if(player.isThisWorking == true)
+            main.hudRender.drawWindow(10f, 10f, w/2, h/2);
+
         if(inPauseScreen && main.getScreen() == this) {
             main.hudRender.drawRect(0, 0, w, h, 0, 0.5f);
 
