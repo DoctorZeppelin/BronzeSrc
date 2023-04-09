@@ -9,6 +9,3 @@ Based on UWUE (By rmn20 AKA Roman Lahin)
 ****************************************
 
 
-/skybox/sky.obj
-/maps/dev/map.obj
-/maps/dev/map.obj
