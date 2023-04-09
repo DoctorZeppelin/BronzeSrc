@@ -439,7 +439,7 @@ public class Game extends Screen {
     public void keyPressed(int key) {
         if(isWakingUp())
 
-        //Toggle Debug mode
+        //Toggle Debug mode (esc stops working if this isn't here, idfk why)
         if(key == GLFW.GLFW_KEY_F3) {
             debugmode = !debugmode;
         }

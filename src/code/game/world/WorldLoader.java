@@ -44,7 +44,7 @@ public class WorldLoader {
         
         LightGroup.clear(true);
         
-        String[] lines = AssetManager.loadLines("/maps/"+map+"/map.ini");
+        String[] lines = AssetManager.loadMapini("/maps/"+map+"/map.ini");
         IniFile lvl = new IniFile(new Hashtable());
         lvl.set(lines, true);
         

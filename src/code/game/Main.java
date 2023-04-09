@@ -353,6 +353,10 @@ public class Main extends Screen {
             e3d.takeScreenshot();
             return;
 
+        } else if(key == GLFW.GLFW_KEY_F3 && getGame() != null) {
+            getGame().debugmode = !getGame().debugmode;
+            return;
+
         }
         
         if(textBox != null && Keys.isThatBinding(key, Keys.OK)) {

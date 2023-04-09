@@ -3,12 +3,11 @@ package code.utils.assetManager;
 import code.utils.IniFile;
 import code.utils.StringTools;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.ArrayList;
+import java.util.zip.*;
 
 /**
  *
@@ -109,6 +108,7 @@ public class AssetManager {
     
     public static String[] loadLines(String path) {
         ArrayList<String> lines = new ArrayList<>();
+
         String str = loadString(path);
         
         if(str != null) {
@@ -121,6 +121,41 @@ public class AssetManager {
         }
         
         return lines.toArray(new String[lines.size()]);
+    }
+
+    public static String[] loadMapini(String path) {
+
+        ZipInputStream zip;
+        InputStream input;
+        try {
+
+            input = new FileInputStream(path);
+
+            zip = new ZipInputStream(new BufferedInputStream(input));
+
+
+
+            ArrayList<String> lines = new ArrayList<>();
+
+            String str = loadString(path);
+
+            if(str != null) {
+                String[] fileLines = StringTools.cutOnStrings(str, '\n');
+
+                for(int i = 0; i < fileLines.length; i++) {
+                    String s = fileLines[i].trim();
+                    if(s.length() > 0) lines.add(s);
+                }
+            }
+
+            return lines.toArray(new String[lines.size()]);
+
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     public static IniFile loadIni(String path, boolean sections) {
