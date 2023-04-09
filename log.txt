@@ -9,16 +9,3 @@ Based on UWUE (By rmn20 AKA Roman Lahin)
 ****************************************
 
 
-Can't load E:\Games\Projects\BronzeSrc\data\maps\towertest.zip\map.ini
-java.io.FileNotFoundException: data\maps\towertest.zip\map.ini (The system cannot find the path specified)
-	at java.base/java.io.FileInputStream.open0(Native Method)
-	at java.base/java.io.FileInputStream.open(FileInputStream.java:216)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157)
-	at code.utils.assetManager.AssetManager.load(AssetManager.java:77)
-	at code.game.ConsoleExecute.Map(ConsoleExecute.java:29)
-	at code.game.Main$1$1.action(Main.java:178)
-	at code.game.BlankScreen.tick(BlankScreen.java:25)
-	at code.game.Main.run(Main.java:258)
-	at code.game.Main.init(Main.java:202)
-	at code.game.Main.main(Main.java:111)
-Map not found!
