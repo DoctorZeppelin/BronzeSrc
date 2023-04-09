@@ -30,7 +30,7 @@ public class ModelLoader {
             ArrayList<Face> faces = null;
 			
             Vector3D max = new Vector3D(), min = new Vector3D();
-            
+
             LinkedHashMap<String, ArrayList<Face>> materials = new LinkedHashMap();
             String currentMaterial = null;
             

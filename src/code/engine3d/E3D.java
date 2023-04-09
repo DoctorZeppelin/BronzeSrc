@@ -10,12 +10,17 @@ import code.utils.StringTools;
 import code.utils.assetManager.AssetManager;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -503,6 +508,7 @@ public class E3D {
     
     public Model getModel(String path, String currentDirectory) {
 		path = AssetManager.updatePath(path, currentDirectory);
+        System.out.println(path);
         Model model = (Model) AssetManager.get("MODEL_" + path);
 
         if(model != null) return model;
@@ -521,9 +527,61 @@ public class E3D {
 
         return model;
     }
-	
+
+    public MeshInstance[] getMapMeshInstances(String mdlName, String currentDirectory) {
+        return getMapMeshInstancesImpl(mdlName, currentDirectory, false);
+    }
+    private MeshInstance[] getMapMeshInstancesImpl(String mdlName, String currentDirectory, boolean one) {
+        String[] mdlNameSplit = StringTools.cutOnStrings(mdlName, '|');
+        Model mdl = getMapModel(mdlNameSplit[0], currentDirectory);
+
+        HashMap<String, String> toReplace = new HashMap();
+        for(int i=0; i<(mdlNameSplit.length-1)/2; i++) {
+            String oldMat = mdlNameSplit[1 + i*2];
+            String newMat = mdlNameSplit[1 + i*2 + 1];
+
+            toReplace.put(oldMat, AssetManager.updatePath(newMat, currentDirectory));
+        }
+
+        MeshInstance[] instances = new MeshInstance[one ? 1 : mdl.getMeshes().length];
+        for(int i=0; i<instances.length; i++) {
+            Mesh mesh = mdl.get(i);
+
+            //todo dont duplicate mat arrays?
+            Material[] mats = new Material[mesh.mats.length];
+            for(int x=0; x<mats.length; x++) {
+                mats[x] = getMaterial(mesh.mats[x], currentDirectory, toReplace);
+            }
+
+            instances[i] = new MeshInstance(mesh, mats);
+        }
+
+        return instances;
+    }
+    public Model getMapModel(String mapname, String zipdirectory) {
+        Model model = (Model) AssetManager.get("MODEL_" + mapname);
+
+        if(model != null) return model;
+
+        try{
+            File a = new File("data", zipdirectory);
+            String absolute = a.getCanonicalPath();
+            try (ZipFile zipFile = new ZipFile(absolute)) {
+                ZipEntry entry = zipFile.getEntry(mapname);
+                InputStream inputStream = zipFile.getInputStream(entry);
+                OutputStream outputStream = new FileOutputStream(mapname);
+
+                model = new Model(ModelLoader.loadObj(this, mapname));
+                AssetManager.add("MODEL_" + mapname, model);
+            }
+        }catch (Exception e){}
+
+
+        return model;
+    }
+
 	public MeshInstance[] getMeshInstances(String mdlName, String currentDirectory) {
-		return getMeshInstancesImpl(mdlName, currentDirectory, false);
+        return getMeshInstancesImpl(mdlName, currentDirectory, false);
 	}
 	
 	public MeshInstance getMeshInstance(String mdlName, String currentDirectory) {

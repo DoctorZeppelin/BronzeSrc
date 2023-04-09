@@ -90,7 +90,8 @@ public class WorldLoader {
         
         MeshInstance[] worldMeshes = null;
         if(lvl.groupExists("world")) {
-            worldMeshes = game.e3d.getMeshInstances(lvl.get("world", "model"), null);
+            worldMeshes = game.e3d.getMapMeshInstances(lvl.get("world", "model"), null);
+            System.out.println(lvl.get("world", "model"));
         }
         
         World world = new World(game.e3d, worldMeshes, skyColor, skybox, game.main.conf.debug);
@@ -408,7 +409,7 @@ public class WorldLoader {
             String name, float[] pos,
             Game game, World world, IniFile ini) {
         MeshObject mesh = new MeshObject(game.e3d.getMeshInstance(ini.get("model"), null));
-        
+
         mesh.meshCollision = ini.getInt("ph_mesh_collision", mesh.meshCollision?1:0) == 1;
         mesh.visible = ini.getInt("visible", mesh.visible?1:0) == 1;
         
