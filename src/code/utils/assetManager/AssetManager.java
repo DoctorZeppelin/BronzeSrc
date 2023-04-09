@@ -123,41 +123,39 @@ public class AssetManager {
         return lines.toArray(new String[lines.size()]);
     }
 
-    public static String[] loadMapini(String zippath) {
-        ArrayList<String> lines = new ArrayList<>();
+    public static String[] loadMapini(String path) {
 
-        File a = new File("data", zippath);
+        ZipInputStream zip;
+        InputStream input;
         try {
-            String absolute = a.getCanonicalPath();
-            try (ZipFile zipFile = new ZipFile(absolute)) {
-                ZipEntry entry = zipFile.getEntry("map.ini");
 
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
-                StringBuilder stringBuilder = new StringBuilder();
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(line);
-                    stringBuilder.append(System.lineSeparator()); // add the line separator after each line
-                }
+            input = new FileInputStream(path);
 
-                bufferedReader.close();
-                String str = stringBuilder.toString();
+            zip = new ZipInputStream(new BufferedInputStream(input));
 
-                if(str != null) {
-                    String[] fileLines = StringTools.cutOnStrings(str, '\n');
 
-                    for(int i = 0; i < fileLines.length; i++) {
-                        String s = fileLines[i].trim();
-                        if(s.length() > 0) lines.add(s);
-                    }
+
+            ArrayList<String> lines = new ArrayList<>();
+
+            String str = loadString(path);
+
+            if(str != null) {
+                String[] fileLines = StringTools.cutOnStrings(str, '\n');
+
+                for(int i = 0; i < fileLines.length; i++) {
+                    String s = fileLines[i].trim();
+                    if(s.length() > 0) lines.add(s);
                 }
             }
-        }catch (Exception e){
-            System.out.println(e);
+
+            return lines.toArray(new String[lines.size()]);
+
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
 
 
-        return lines.toArray(new String[lines.size()]);
     }
 
     public static IniFile loadIni(String path, boolean sections) {

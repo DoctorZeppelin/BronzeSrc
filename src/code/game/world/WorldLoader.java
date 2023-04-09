@@ -28,7 +28,6 @@ import code.math.Vector3D;
 import code.utils.IniFile;
 import code.utils.StringTools;
 
-import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.ArrayList;
 
@@ -45,7 +44,7 @@ public class WorldLoader {
         
         LightGroup.clear(true);
         
-        String[] lines = AssetManager.loadMapini("/maps/"+map+".zip");
+        String[] lines = AssetManager.loadMapini("/maps/"+map+"/map.ini");
         IniFile lvl = new IniFile(new Hashtable());
         lvl.set(lines, true);
         
@@ -69,9 +68,9 @@ public class WorldLoader {
             game.player.rotY = nextRotY;
         }
         if(nextRotX != Game.DONT_ROTATE) game.player.rotX = nextRotX;
-
-        Vector3D camPos = new Vector3D(game.player.pos);
-        camPos.y += game.player.eyeHeight;
+		
+		Vector3D camPos = new Vector3D(game.player.pos);
+		camPos.y += game.player.eyeHeight;
         World.updateListener(camPos, null, game.player.rotY);
         
         MeshInstance[] skybox = null;
@@ -94,8 +93,8 @@ public class WorldLoader {
         }
         
         World world = new World(game.e3d, worldMeshes, skyColor, skybox, game.main.conf.debug);
-
-        world.drawDistance = lvl.getFloat("world", "draw_distance", world.drawDistance);
+        
+		world.drawDistance = lvl.getFloat("world", "draw_distance", world.drawDistance);
         world.fallDeath = lvl.getInt("world", "fall_death", world.fallDeath?1:0) == 1;
         
         if(lvl.groupExists("fog")) {
@@ -181,10 +180,10 @@ public class WorldLoader {
     }
     
     static void loadObjects(
-            String[] sections,
-            IniFile[] objsInis, Game game, World world,
-            ArrayList<Integer> sourcesToPlay
-    ) {
+			String[] sections, 
+			IniFile[] objsInis, Game game, World world,
+			ArrayList<Integer> sourcesToPlay
+	) {
         ArrayList lightgroupdata = new ArrayList<>();
         boolean defaultWas = false;
         
@@ -217,10 +216,10 @@ public class WorldLoader {
                         pos = StringTools.cutOnFloats(poses[x], ',');
                         if(poses.length > 1 && thisName != null) thisName += "_" + (x+1);
                     }
-
+					
                     defaultWas |= type.equals("lightgroup") && "default".equals(name);
-                    loadObject(game, world, data[1], thisName, objIni,
-                            pos, lightgroupdata, sourcesToPlay);
+                    loadObject(game, world, data[1], thisName, objIni, 
+							pos, lightgroupdata, sourcesToPlay);
                 }
             }
         }
@@ -286,13 +285,13 @@ public class WorldLoader {
             
             float[] color = StringTools.cutOnFloats(ini.getDef("color", "255,255,255"), ',');
 
-            Vector3D position = null;
+			Vector3D position = null;
             Vector3D dir = new Vector3D();
             dir.setDirection(ini.getFloat("rot_x", 0), ini.getFloat("rot_y", 0));
 
             String tmp = ini.getDef("type", "point");
             boolean isSpot = tmp.equals("spot");
-            boolean isPoint = true;
+			boolean isPoint = true;
             
             if(tmp.equals("point") || isSpot) {
                 position = new Vector3D(pos[0], pos[1], pos[2]);
@@ -300,8 +299,8 @@ public class WorldLoader {
                 if(!isSpot) dir = null;
             } else if(tmp.equals("dir")) {
                 position = dir;
-                dir = null;
-                isPoint = false;
+				dir = null;
+				isPoint = false;
             }
 
             Light light = new Light(objName, position, isPoint, dir, color);
@@ -338,21 +337,21 @@ public class WorldLoader {
         source.setLoop(ini.getInt("loop", 1) == 1);
         
         source.set3D(ini.getInt("3d_effects", 1) == 1);
-
-        boolean linear = ini.getInt("linear_attenuation", SoundSource.LINEAR_DIST?1:0) == 1;
-
+		
+		boolean linear = ini.getInt("linear_attenuation", SoundSource.LINEAR_DIST?1:0) == 1;
+		
         source.setDistance(
-                ini.getFloat("min_distance", linear ? SoundSource.MIN_LINEAR_DIST : SoundSource.MIN_DIST),
-                ini.getFloat("max_distance", SoundSource.MAX_DIST),
-                linear
-        );
-
-        String tmp = ini.get("sound_type");
-        if(tmp != null) {
-            if(tmp.equals("sound")) source.setSoundType(Configuration.SOUND);
-            else if(tmp.equals("music")) source.setSoundType(Configuration.MUSIC);
-            else if(tmp.equals("footstep")) source.setSoundType(Configuration.FOOTSTEP);
-        }
+			ini.getFloat("min_distance", linear ? SoundSource.MIN_LINEAR_DIST : SoundSource.MIN_DIST),
+			ini.getFloat("max_distance", SoundSource.MAX_DIST),
+			linear
+		);
+		
+		String tmp = ini.get("sound_type");
+		if(tmp != null) {
+			if(tmp.equals("sound")) source.setSoundType(Configuration.SOUND);
+			else if(tmp.equals("music")) source.setSoundType(Configuration.MUSIC);
+			else if(tmp.equals("footstep")) source.setSoundType(Configuration.FOOTSTEP);
+		}
         
         SoundSourceEntity sound = new SoundSourceEntity(source, ini.getInt("random_offset", 0) == 1);
         
@@ -405,22 +404,22 @@ public class WorldLoader {
     }
 
     private static MeshObject loadMesh(
-            String name, float[] pos,
-            Game game, World world, IniFile ini) {
+			String name, float[] pos, 
+			Game game, World world, IniFile ini) {
         MeshObject mesh = new MeshObject(game.e3d.getMeshInstance(ini.get("model"), null));
         
         mesh.meshCollision = ini.getInt("ph_mesh_collision", mesh.meshCollision?1:0) == 1;
         mesh.visible = ini.getInt("visible", mesh.visible?1:0) == 1;
         
         loadPhysEntity(mesh, pos, name, game, world, ini);
-
+		
         return mesh;
     }
 
     private static SpriteObject loadSprite(
-            String name, float[] pos,
-            Game game, World world, IniFile ini,
-            boolean billboard) {
+			String name, float[] pos, 
+			Game game, World world, IniFile ini,
+			boolean billboard) {
         Material loadedMat = game.e3d.getMaterial(ini.get("tex"), null);
         if(!(loadedMat instanceof WorldMaterial)) {
             System.out.println("wrong material???");
