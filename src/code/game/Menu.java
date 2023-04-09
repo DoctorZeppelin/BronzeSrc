@@ -56,17 +56,17 @@ public class Menu extends Screen {
             public void onEnter() {
                 main.musPlayer.setVolume(0);
                 main.musPlayer.stop();
-                main.gameStartS.play();
+                //main.gameStartS.play();
 
                 main.window.showCursor(false);
 
-                BlankScreen blank = new BlankScreen(main, 5000, 0) {
+                BlankScreen blank = new BlankScreen(main, 0, 0) {
 
                     public void action() {
                         Game game = new Game(main);
                         main.setScreen(game, true);
                         game.loadMap(main.gamecfg.get("game", "start_map"));
-                        game.setFade(new Fade(true, 0, 1000));
+                        //game.setFade(new Fade(true, 0, 1000));
                     }
                 };
                 main.setScreen(blank, true);
